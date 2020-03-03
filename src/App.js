@@ -1,26 +1,27 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+  
+import React from 'react'
+import './App.css'
+import { ApolloProvider } from "@apollo/react-hooks"
+import { ApolloClient, HttpLink, InMemoryCache } from "apollo-boost"
+import Data from "./components/Data"
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+
+    const httpLink = new HttpLink({
+        uri: "https://monocle-hasura.herokuapp.com/v1/graphql"
+    })
+
+    const client = new ApolloClient({
+        link: httpLink,
+        cache: new InMemoryCache()
+    })
+
+    return (
+        <ApolloProvider client={client}>
+            <Data />
+        </ApolloProvider>
+    )
 }
 
-export default App;
+export default App
